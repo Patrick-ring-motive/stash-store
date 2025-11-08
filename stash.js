@@ -16,7 +16,8 @@ class Stash{
       if(this.cache instanceof Promise){
         this.cache = await this.cache;
       }
-      return await this.cache.match(Stash.urlKey(key));
+      const res = await this.cache.match(Stash.urlKey(key));
+      return await res.clone().text();
     }catch(e){
       console.warn(e,key);
     }
@@ -28,7 +29,7 @@ class Stash{
       }
       return await this.cache.put(Stash.urlKey(key),new Response(value));
     }catch(e){
-      console.warn(e,key);
+      console.warn(e,key,value);
     }
   }
   async delete(key){
