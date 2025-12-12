@@ -19,11 +19,7 @@ class Stash{
         this.cache = await this.cache;
       }
       const res = await this.cache.match(Stash.urlKey(key));
-      const value = await res.clone().text();
-      if(this.type == 'json'){
-        return JSON.parse(value);
-      }
-      return value;
+      return JSON.parse(await res.clone().text());
     }catch(e){
       console.warn(e,key);
     }
@@ -33,10 +29,7 @@ class Stash{
       if(this.cache instanceof Promise){
         this.cache = await this.cache;
       }
-      if(this.type == 'json'){
-        return JSON.stringify(value);
-      }
-      return await this.cache.put(Stash.urlKey(key),new Response(value));
+      return await this.cache.put(Stash.urlKey(key),new Response(JSON.stringify(value)));
     }catch(e){
       console.warn(e,key,value);
     }
