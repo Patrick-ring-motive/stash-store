@@ -1,8 +1,6 @@
 class Stash{
   constructor(name=''){
     try{
-      name = name?.name ?? name;
-      this.type = name?.type;
       this.cache = caches.open('stash'+String(name));
     }catch(e){
       console.warn(e);
