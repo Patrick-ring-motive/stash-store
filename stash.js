@@ -1,6 +1,8 @@
 class Stash{
   constructor(name=''){
     try{
+      name = name?.name ?? name;
+      this.type = name?.type;
       this.cache = caches.open('stash'+String(name));
     }catch(e){
       console.warn(e);
@@ -17,7 +19,11 @@ class Stash{
         this.cache = await this.cache;
       }
       const res = await this.cache.match(Stash.urlKey(key));
-      return await res.clone().text();
+      const value = await res.clone().text();
+      if(this.type == 'json'){
+        return JSON.parse(value);
+      }
+      return value;
     }catch(e){
       console.warn(e,key);
     }
@@ -26,6 +32,9 @@ class Stash{
     try{
       if(this.cache instanceof Promise){
         this.cache = await this.cache;
+      }
+      if(this.type == 'json'){
+        return JSON.stringify(value);
       }
       return await this.cache.put(Stash.urlKey(key),new Response(value));
     }catch(e){
