@@ -19,7 +19,7 @@ class Stash {
         this.cache = await this.cache;
       }
       const res = await this.cache.match(Stash.urlKey(key));
-      return JSON.parse(await res.clone().text());
+      return JSON.parse(await res?.clone?.()?.text?.());
     } catch (e) {
       console.warn(e, key);
     }
