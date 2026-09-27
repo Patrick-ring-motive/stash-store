@@ -9,7 +9,7 @@ class Stash {
       console.warn(e);
     }
   }
-  static urlKey(key,name) {
+  static urlKey(key, name) {
     const url = new URL('https://stash.store/' + name ? name + '/' : '');
     url.searchParams.set('key', String(key));
     return String(url);
@@ -19,7 +19,7 @@ class Stash {
       if (this.cache instanceof Promise) {
         this.cache = await this.cache;
       }
-      const res = await this.cache.match(Stash.urlKey(key,this.name));
+      const res = await this.cache.match(Stash.urlKey(key, this.name));
       return JSON.parse(await res?.clone?.()?.text?.());
     } catch (e) {
       console.warn(e, key);
@@ -36,7 +36,7 @@ class Stash {
         headers.set(header, `public, max-age=${seconds}, s-max-age=${seconds}, stale-if-error=31535000, stale-while-revalidate=31535000`);
       }
       headers.set('expires', new Date(Date.now() + (1000 * seconds)).toUTCString());
-      return await this.cache.put(new Request(Stash.urlKey(key,this.name), {
+      return await this.cache.put(new Request(Stash.urlKey(key, this.name), {
         headers
       }), new Response(JSON.stringify(value), {
         headers
@@ -50,7 +50,7 @@ class Stash {
       if (this.cache instanceof Promise) {
         this.cache = await this.cache;
       }
-      return await this.cache.delete(Stash.urlKey(key,this.name));
+      return await this.cache.delete(Stash.urlKey(key, this.name));
     } catch (e) {
       console.warn(e, key);
     }
